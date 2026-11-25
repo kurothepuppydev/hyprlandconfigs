@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KURO Desktop · kurothepuppy.dev</title>
+<style>
+:root { color-scheme: dark; color: #F0EDF3; background: #17151D; font: 14px Inter, sans-serif; }
+body { margin: 0; }
+.desktop { position: relative; isolation: isolate; min-height: 100svh; box-sizing: border-box; padding: 8px 12px 12px; overflow: hidden; background: #17151D; }
+.wallpaper {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.wallpaper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #17151D center / cover no-repeat url("kurothepuppy_brand_kit/site-background-gothic-gears.png");
+  opacity: .74;
+}
+.wallpaper::after {
+  content: "";
+  position: absolute;
+  inset: 5% 3% auto auto;
+  width: clamp(260px, 46vw, 680px);
+  aspect-ratio: 362 / 279;
+  background: center / contain no-repeat url("preview-assets/kuro-character.webp");
+  opacity: .66;
+  mask-image: radial-gradient(ellipse at 48% 45%, #000 22%, #000d 43%, transparent 72%);
+}
+.desktop.clean .wallpaper { display: none; }
+.cog {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  clip-path: var(--outline);
+  opacity: var(--opacity);
+  background:
+    repeating-radial-gradient(circle, transparent 0 4px, #C8C2D018 5px, transparent 6px 9px),
+    radial-gradient(circle, #17151D 0 4%, #6D5C87 4.5% 6%, #302A3B 6.5% 12%, transparent 12.5% 44%, #9282AC 44.5% 45%, #302A3B 45.5% 49%, #6D5C87 49.5% 50%, #24212B 50.5% 54%, #513D68 54.5% 55.5%, #302A3B 56%),
+    repeating-conic-gradient(from 4deg, #6D5C87 0 1deg, #302A3B 2deg 7deg, #513D68 8deg 9deg, transparent 10deg 45deg);
+  animation: turn var(--period) linear infinite var(--direction);
+}
+.cog::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(from 15deg, #B9A8D4 0 1deg, transparent 1deg 15deg);
+  mask-image: radial-gradient(circle, transparent 0 46%, black 46.5% 47.5%, transparent 48%);
+  opacity: .65;
+}
+.desktop.paused .cog { animation-play-state: paused; }
+@keyframes turn { to { transform: rotate(1turn); } }
+header { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; min-height: 36px; padding: 0 12px; background: #17151Df2; border: 1px solid #41394B; border-radius: 5px; }
+nav { display: flex; flex-wrap: wrap; gap: 2px; }
+button { font: inherit; color: #C8C2D0; background: transparent; border: 0; border-bottom: 2px solid transparent; border-radius: 4px; padding: 7px 8px; cursor: pointer; transition: background-color 140ms, color 140ms, border-color 140ms; }
+button:hover, button[aria-pressed="true"] { color: #F0EDF3; background: #302A3B; }
+button[aria-pressed="true"] { border-bottom-color: #9282AC; }
+button:focus-visible { outline: 2px solid #B9A8D4; outline-offset: 2px; }
+.sparkle { display: inline-block; transition: transform 150ms ease-out; }
+.session:hover .sparkle { transform: translateY(-2px); }
+button:active { transform: translateY(1px); }
+.shortcuts { display: flex; gap: 4px; margin: 12px 0 0; }
+.shortcuts button { background: #201D27; border: 1px solid #41394B; }
+.shortcuts button:hover { background: #302A3B; border-color: #9282AC; }
+.session { display: flex; align-items: center; gap: 8px; }
+.session img { width: 22px; height: 22px; }
+.brand { display: flex; align-items: center; gap: 6px; color: #C8C2D0; }
+.desktop-content { display: grid; grid-template-columns: minmax(0, 520px); grid-template-rows: auto 1fr; align-items: start; gap: 24px; box-sizing: border-box; min-height: calc(100svh - 60px); padding: clamp(24px, 9vh, 96px) clamp(0px, 6vw, 80px) 24px; }
+.brand-art {
+  align-self: end;
+  width: min(100%, 420px);
+  margin: 0;
+  box-sizing: border-box;
+  padding: 8px;
+  background: #201D27;
+  border: 1px solid #41394B;
+  border-left: 2px solid #9282AC;
+  border-radius: 5px;
+}
+.brand-art img { display: block; width: 100%; height: auto; border-radius: 3px; }
+.brand-art figcaption { display: flex; align-items: center; gap: 8px; color: #C8C2D0; padding: 8px 4px 0; font-size: 12px; }
+.kuromi-charm {
+  position: relative;
+  margin-left: auto;
+  width: 34px;
+  height: 23px;
+  border: 1px solid #9282AC;
+  border-radius: 48% 48% 43% 43%;
+  background: #0B0A0E;
+  transform-origin: 50% 10%;
+  transition: transform 150ms ease-out;
+}
+.kuromi-charm:hover { transform: rotate(-8deg); }
+.kuromi-charm::before, .kuromi-charm::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  width: 13px;
+  height: 16px;
+  background: #9282AC;
+  clip-path: polygon(0 0, 22% 5%, 74% 45%, 100% 100%, 28% 84%);
+}
+.kuromi-charm::before { left: 0; }
+.kuromi-charm::after { right: 0; scale: -1 1; }
+.charm-face {
+  position: absolute;
+  inset: 10px 4px 2px;
+  border-radius: 55% 55% 45% 45%;
+  background: radial-gradient(circle at 32% 48%, #17151D 1px, transparent 1.5px),
+    radial-gradient(circle at 68% 48%, #17151D 1px, transparent 1.5px), #F0EDF3;
+}
+.charm-skull {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  color: #D6A1BA;
+  font: 10px/10px sans-serif;
+}
+.workspace-path {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #41394B;
+  border-radius: 4px;
+  background: #201D27;
+  font: 12px "JetBrains Mono", monospace;
+}
+.workspace-path span { color: #B9A8D4; }
+.shortcuts button { box-shadow: inset 0 -2px transparent; transition: background-color 140ms, color 140ms, border-color 140ms, box-shadow 140ms; }
+.shortcuts button:hover, .shortcuts button:focus-visible { box-shadow: inset 0 -2px #9282AC; }
+@media (max-width: 760px) {
+  .desktop-content { grid-template-columns: minmax(0, 1fr); }
+  .wallpaper::after { inset: 18% 0 auto auto; }
+  .brand-art { width: min(100%, 360px); }
+}
+.sparkle { color: #B9A8D4; }
+time, nav, pre { font-family: "JetBrains Mono", monospace; }
+#workspace { min-width: 0; animation: enter 180ms ease-out; }
+.terminal { border: 2px solid #9282AC; border-radius: 5px; background: #0B0A0E; box-shadow: 0 8px 24px #0B0A0E80; }
+.terminal h1 { margin: 0; padding: 8px 12px; color: #C8C2D0; font-size: 13px; font-weight: 400; border-bottom: 1px solid #41394B; background: #201D27; }
+pre { margin: 12px; white-space: pre-wrap; line-height: 1.6; }
+.prompt { color: #B9A8D4; }
+@keyframes enter { from { opacity: .25; transform: scale(.98); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, #workspace { animation: none; transition: none; } .session:hover .sparkle, .kuromi-charm:hover, button:active { transform: none; } #pause-cogs { display: none; } }
+.launcher {
+  box-sizing: border-box;
+  width: min(480px, calc(100% - 32px));
+  padding: 20px;
+  color: #F0EDF3;
+  background: #17151D;
+  border: 1px solid #9282AC;
+  border-radius: 7px;
+  box-shadow: 0 12px 40px #0B0A0E;
+}
+.launcher[open] { animation: enter 160ms ease-out; }
+.launcher::backdrop { background: #0B0A0E99; }
+.launcher h2 { margin: 0 0 12px; font-size: 14px; }
+.launcher input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  font: inherit;
+  color: inherit;
+  background: #201D27;
+  border: 1px solid #41394B;
+  border-radius: 4px;
+}
+.launcher input:focus { outline: 1px solid #9282AC; }
+.launcher-items { display: grid; gap: 4px; margin-top: 8px; }
+.launcher-items button { text-align: left; }
+.launcher-items button:hover, .launcher-items button:focus-visible { border-bottom-color: #9282AC; }
+@media (prefers-reduced-motion: reduce) { .launcher[open] { animation: none; } }
+.status-panels { display: flex; flex-wrap: wrap; gap: 2px; }
+.status-controls { display: grid; gap: 8px; margin-top: 12px; }
+.status-controls button { background: #201D27; text-align: left; }
+.status-controls button:hover { background: #302A3B; }
+.status-controls label { display: grid; gap: 8px; }
+.status-toast { position: fixed; z-index: 4; top: 76px; right: 16px; box-sizing: border-box; width: min(360px, calc(100vw - 32px)); padding: 16px; color: #F0EDF3; background: #201D27; border: 1px solid #9282AC; border-radius: 6px; animation: enter 180ms ease-out; }
+.status-toast button { margin-left: 8px; }
+@media (prefers-reduced-motion: reduce) { .status-toast { animation: none; } }
+.launcher, .status-toast {
+  font-family: "JetBrains Mono", monospace;
+  background: #0B0A0E;
+  border-color: #41394B;
+  border-left: 2px solid #9282AC;
+}
+.launcher .panel-path, .status-toast .panel-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -20px -20px 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #41394B;
+  border-radius: 5px 5px 0 0;
+  background: #201D27;
+  font-size: 12px;
+  font-weight: 600;
+}
+.panel-path span, .command-prompt > span { color: #B9A8D4; }
+.command-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 8px;
+}
+.launcher-items button, .status-controls button { padding: 9px 10px; border-radius: 3px; }
+.launcher-items button::before, .status-controls button::before {
+  content: "›";
+  color: #B9A8D4;
+  margin-right: 8px;
+}
+.status-dialog p { color: #C8C2D0; font-size: 13px; }
+.status-toast .panel-path { margin: -16px -16px 8px; }
+</style>
+<main class="desktop">
+  <div class="wallpaper" aria-hidden="true"></div>
+  <header>
+    <nav aria-label="Workspaces"></nav>
+    <time></time>
+    <div class="status-panels" aria-label="Desktop status">
+      <button type="button" data-panel="Network">Wi-Fi</button>
+      <button type="button" data-panel="Audio">Vol 45%</button>
+      <button type="button" data-panel="Bluetooth">BT</button>
+      <button type="button" data-panel="Battery">Bat 82%</button>
+      <button type="button" data-panel="Tray">Tray</button>
+      <button type="button" data-panel="Notifications">Notifications</button>
+      <button type="button" data-panel="Session">Session</button>
+    </div>
+    <div class="session"><span class="sparkle" aria-hidden="true">♱ ☠︎</span><span class="brand"><img src="kurothepuppy_brand_kit/icons/emblem-256.png" alt="">kurothepuppy.dev</span><button id="wallpaper" type="button" aria-pressed="true">Gear wallpaper</button><button id="pause-cogs" type="button" aria-pressed="false">Pause cogs</button></div>
+  </header>
+  <div class="desktop-content">
+  <section id="workspace" aria-label="Terminal workspace">
+    <div class="workspace-path"><span aria-hidden="true">01 /</span><strong>Terminal</strong></div>
+    <div class="terminal">
+      <h1>kurothepuppy.dev</h1>
+      <pre><span class="prompt">~/hyprlandconfigs $</span> hyprctl version
+Hyprland 0.53.3
+
+<span class="prompt">~/hyprlandconfigs $</span> ▌</pre>
+    </div>
+    <div class="shortcuts" aria-label="App shortcuts">
+      <button id="open-launcher" type="button" aria-haspopup="dialog">Apps ✦</button>
+      <button type="button" data-workspace="0">Terminal</button>
+      <button type="button" data-workspace="2">Browser</button>
+      <button type="button" data-workspace="5">Files</button>
+    </div>
+  </section>
+  <figure class="brand-art">
+    <img src="kurothepuppy_brand_kit/mainlogo.png" width="1536" height="1024" alt="Illustrated portrait of Kuro beneath a broken halo, with the kurothepuppy.dev wordmark.">
+    <figcaption><span class="sparkle" aria-hidden="true">✦</span> Kuro · Broken halo portrait <span class="kuromi-charm" role="img" aria-label="Kuromi-inspired hood and pink skull" title="Kuromi-inspired charm"><span class="charm-face" aria-hidden="true"></span><span class="charm-skull" aria-hidden="true">☠︎</span></span></figcaption>
+  </figure>
+  </div>
+</main>
+<dialog class="launcher" aria-labelledby="launcher-title">
+  <h2 id="launcher-title" class="panel-path"><span aria-hidden="true">00 /</span> Applications</h2>
+  <div class="command-prompt"><span aria-hidden="true">❯</span><input type="search" aria-label="Search applications" placeholder="Search applications" autofocus></div>
+  <div class="launcher-items"></div>
+  <p class="launcher-empty" hidden>No matching applications.</p>
+</dialog>
+<div class="status-toast" hidden><div class="panel-path"><span aria-hidden="true">06 /</span> Notifications</div><span role="status"></span><button type="button">Dismiss</button></div>
+<dialog class="launcher status-dialog" aria-labelledby="status-title">
+  <h2 id="status-title" class="panel-path"><span aria-hidden="true"></span><strong></strong></h2>
+  <p id="status-summary"></p>
+  <div class="status-controls"></div>
+  <form method="dialog"><button>Close</button></form>
+</dialog>
+<script>
+const workspace = document.querySelector("#workspace");
+const nav = document.querySelector("nav");
+const names = ["Terminal", "Development", "Browser", "Communication", "Creative", "Files", "Secondary work", "Testing", "Miscellaneous"];
+
+const samples = [
+  "❯ hyprctl version\nHyprland 0.53.3",
+  "src/desktop.ts\n\nexport const workspace = 2;\n\nType checking passed.",
+  "kurothepuppy.dev\n\nIndependent software. Quietly unconventional.",
+  "Team chat\n\nMina   Can you review the new palette?\nKuro   I’ll check the focus states.",
+  "Wallpaper study\n\nObsidian  ■     Lavender  ✦\nOfficial gothic gear texture",
+  "~/Projects/hyprlandconfigs\n\nconfig/\nkurothepuppy_brand_kit/\ninstall.md",
+  "Scratchpad\n\n• Check monitor scaling\n• Review keyboard shortcuts",
+  "❯ Hyprland --verify-config -c config/hypr/hyprland.conf\n\nconfig ok",
+  "Reference notes\n\nHyprland · Waybar · Rofi"
+];
+const title = workspace.querySelector("h1");
+const content = workspace.querySelector("pre");
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+let transition;
+
+function selectWorkspace(index) {
+  nav.querySelector('[aria-pressed="true"]').setAttribute("aria-pressed", "false");
+  nav.children[index].setAttribute("aria-pressed", "true");
+  workspace.setAttribute("aria-label", `${names[index]} workspace`);
+  workspace.querySelector(".workspace-path span").textContent = `${String(index + 1).padStart(2, "0")} /`;
+  workspace.querySelector(".workspace-path strong").textContent = names[index];
+  title.textContent = index === 0 ? "kurothepuppy.dev" : names[index];
+  content.textContent = samples[index];
+  transition?.cancel();
+  if (!reducedMotion.matches) {
+    transition = workspace.querySelector(".terminal").animate(
+      [{ opacity: .45, transform: "translateY(3px)" }, { opacity: 1, transform: "translateY(0)" }],
+      { duration: 180, easing: "ease-out" }
+    );
+  }
+}
+
+names.forEach((name, index) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = index + 1;
+  button.setAttribute("aria-label", `Workspace ${index + 1}, ${name}`);
+  button.setAttribute("aria-pressed", index === 0);
+  button.addEventListener("click", () => selectWorkspace(index));
+  nav.append(button);
+});
+
+document.querySelectorAll("[data-workspace]").forEach(button => {
+  button.addEventListener("click", () => selectWorkspace(Number(button.dataset.workspace)));
+});
+
+const launcher = document.querySelector(".launcher");
+const search = launcher.querySelector("input");
+const launcherItems = launcher.querySelector(".launcher-items");
+const empty = launcher.querySelector(".launcher-empty");
+
+names.forEach((name, index) => {
+  const action = document.createElement("button");
+  action.type = "button";
+  action.textContent = name;
+  action.addEventListener("click", () => {
+    launcher.close();
+    selectWorkspace(index);
+  });
+  launcherItems.append(action);
+});
+
+function filterLauncher() {
+  const query = search.value.trim().toLowerCase();
+  for (const item of launcherItems.children) {
+    item.hidden = !item.textContent.toLowerCase().includes(query);
+  }
+  empty.hidden = Boolean(launcherItems.querySelector("button:not([hidden])"));
+}
+
+function openLauncher() {
+  if (launcher.open) return;
+  search.value = "";
+  filterLauncher();
+  launcher.showModal();
+}
+
+document.querySelector("#open-launcher").addEventListener("click", openLauncher);
+search.addEventListener("input", filterLauncher);
+search.addEventListener("keydown", event => {
+  const first = launcherItems.querySelector("button:not([hidden])");
+  if (!first) return;
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    first.focus();
+  } else if (event.key === "Enter") {
+    event.preventDefault();
+    first.click();
+  }
+});
+document.addEventListener("keydown", event => {
+  if (event.ctrlKey && event.code === "Space") {
+    event.preventDefault();
+    openLauncher();
+  }
+});
+launcher.addEventListener("click", event => {
+  if (event.target !== launcher) return;
+  const bounds = launcher.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom) launcher.close();
+});
+
+const statusDialog = document.querySelector(".status-dialog");
+const statusTitle = document.querySelector("#status-title");
+const statusSummary = document.querySelector("#status-summary");
+const controls = statusDialog.querySelector(".status-controls");
+const toast = document.querySelector(".status-toast");
+const state = { wifi: true, bluetooth: false, volume: 45, muted: false, charging: false };
+let toastTimer;
+
+function notify(message) {
+  clearTimeout(toastTimer);
+  toast.querySelector("[role=status]").textContent = message;
+  toast.hidden = false;
+  toastTimer = setTimeout(() => { toast.hidden = true; }, 6000);
+}
+
+toast.querySelector("button").addEventListener("click", () => { toast.hidden = true; });
+
+function action(label, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = label;
+  button.addEventListener("click", onClick);
+  controls.append(button);
+}
+
+function toggle(panel, key, label, updateLabel) {
+  action(label, () => {
+    state[key] = !state[key];
+    if (updateLabel) document.querySelector(`[data-panel="${panel}"]`).textContent = updateLabel();
+    renderPanel(panel);
+  });
+}
+
+function renderPanel(panel) {
+  const panelIds = ["Network", "Audio", "Bluetooth", "Battery", "Tray", "Notifications", "Session", "Lock screen"];
+  statusTitle.querySelector("span").textContent = `${String(panelIds.indexOf(panel) + 1).padStart(2, "0")} /`;
+  statusTitle.querySelector("strong").textContent = panel;
+  statusSummary.textContent = "";
+  controls.replaceChildren();
+  switch (panel) {
+    case "Network":
+      statusSummary.textContent = state.wifi ? "Connected to KURO-Preview · Signal 92%" : "Wi-Fi is off";
+      toggle(panel, "wifi", state.wifi ? "Turn Wi-Fi off" : "Turn Wi-Fi on", () => state.wifi ? "Wi-Fi" : "Offline");
+      break;
+    case "Audio": {
+      statusSummary.textContent = "Default output · Speakers";
+      const label = document.createElement("label");
+      const volume = document.createElement("input");
+      const output = document.querySelector('[data-panel="Audio"]');
+      const updateLabel = () => state.muted ? "Muted" : `Vol ${state.volume}%`;
+      label.textContent = `Volume ${state.volume}%`;
+      volume.type = "range";
+      volume.value = state.volume;
+      volume.addEventListener("input", () => {
+        state.volume = Number(volume.value);
+        label.firstChild.textContent = `Volume ${state.volume}%`;
+        output.textContent = updateLabel();
+      });
+      label.append(volume);
+      controls.append(label);
+      toggle(panel, "muted", state.muted ? "Unmute" : "Mute", updateLabel);
+      break;
+    }
+    case "Bluetooth":
+      statusSummary.textContent = state.bluetooth ? "Bluetooth on · No devices connected" : "Bluetooth is off";
+      toggle(panel, "bluetooth", state.bluetooth ? "Turn Bluetooth off" : "Turn Bluetooth on", () => state.bluetooth ? "BT on" : "BT");
+      break;
+    case "Battery":
+      statusSummary.textContent = state.charging ? "82% · Charging" : "82% · On battery";
+      toggle(panel, "charging", state.charging ? "Simulate unplugging" : "Simulate plugging in", () => state.charging ? "Charging" : "Bat 82%");
+      break;
+    case "Tray":
+      statusSummary.textContent = "Preview tray";
+      action("Open launcher", () => { statusDialog.close(); openLauncher(); });
+      action("Show notification", () => { statusDialog.close(); notify("KURO Desktop · Tray notification"); });
+      break;
+    case "Notifications":
+      statusSummary.textContent = "Try a Dunst-style notification.";
+      action("Send sample notification", () => { statusDialog.close(); notify("KURO Desktop · Notifications are working."); });
+      break;
+    case "Session":
+      statusSummary.textContent = "Preview session actions";
+      action("Lock", () => renderPanel("Lock screen"));
+      for (const label of ["Log out", "Restart", "Power off"]) {
+        action(label, () => {
+          statusSummary.textContent = `Confirm ${label.toLowerCase()} in the preview?`;
+          controls.replaceChildren();
+          action("Cancel", () => renderPanel("Session"));
+          action("Confirm", () => { statusDialog.close(); notify(`${label} simulated`); });
+        });
+      }
+      break;
+    case "Lock screen":
+      statusSummary.textContent = `${document.querySelector("time").textContent} · kurothepuppy.dev`;
+      action("Unlock preview", () => statusDialog.close());
+      break;
+  }
+}
+
+document.querySelectorAll("[data-panel]").forEach(button => {
+  button.addEventListener("click", () => {
+    renderPanel(button.dataset.panel);
+    statusDialog.showModal();
+  });
+});
+
+const wallpaper = document.querySelector("#wallpaper");
+wallpaper.addEventListener("click", () => {
+  const clean = document.querySelector(".desktop").classList.toggle("clean");
+  wallpaper.setAttribute("aria-pressed", !clean);
+});
+
+const pauseCogs = document.querySelector("#pause-cogs");
+pauseCogs.addEventListener("click", () => {
+  const paused = document.querySelector(".desktop").classList.toggle("paused");
+  pauseCogs.setAttribute("aria-pressed", paused);
+});
+
+const gearSpecs = [
+  { x: 4, y: 12, size: "min(35vw, 500px)", teeth: 24, period: 210, opacity: .52 },
+  { x: 18, y: 19, size: "min(17vw, 220px)", teeth: 16, period: 140, opacity: .36 },
+  { x: 96, y: 90, size: "min(42vw, 580px)", teeth: 28, period: 245, opacity: .54 },
+  { x: 79, y: 96, size: "min(18vw, 240px)", teeth: 16, period: 140, opacity: .39 }
+];
+const wallpaperLayer = document.querySelector(".wallpaper");
+
+gearSpecs.forEach(({ x, y, size, teeth, period, opacity }, index) => {
+  const cog = document.createElement("span");
+  cog.className = "cog";
+  const outline = Array.from({ length: teeth }, (_, tooth) =>
+    [0, .2, .32, .68, .8].map((offset, point) => {
+      const angle = (tooth + offset) * 2 * Math.PI / teeth;
+      const radius = point === 2 || point === 3 ? 49 : 43;
+      return `${50 + radius * Math.cos(angle)}% ${50 + radius * Math.sin(angle)}%`;
+    })
+  ).flat();
+  cog.style.setProperty("--outline", `polygon(${outline.join(",")})`);
+  cog.style.setProperty("--x", `${x}%`);
+  cog.style.setProperty("--y", `${y}%`);
+  cog.style.setProperty("--size", size);
+  cog.style.setProperty("--period", `${period}s`);
+  cog.style.setProperty("--opacity", opacity);
+  cog.style.setProperty("--direction", index % 2 === 0 ? "normal" : "reverse");
+  wallpaperLayer.append(cog);
+});
+
+const clock = document.querySelector("time");
+const updateClock = () => {
+  clock.textContent = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+};
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</html>

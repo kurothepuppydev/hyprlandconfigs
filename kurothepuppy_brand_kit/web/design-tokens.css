@@ -1,0 +1,11 @@
+:root {
+  color-scheme: dark;
+  --ktp-obsidian: #17151D;
+  --ktp-deep-violet: #302A3B;
+  --ktp-muted-lavender: #9282AC;
+  --ktp-ash: #C8C2D0;
+  --ktp-ivory: #F0EDF3;
+  --ktp-black: #0B0A0E;
+  --ktp-font-display: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --ktp-font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+}

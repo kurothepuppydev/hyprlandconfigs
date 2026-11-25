@@ -1,0 +1,16 @@
+{
+  "name": "kurothepuppy.dev",
+  "colors": {
+    "obsidian": "#17151D",
+    "deep_violet": "#302A3B",
+    "muted_lavender": "#9282AC",
+    "ash": "#C8C2D0",
+    "ivory": "#F0EDF3",
+    "pure_black": "#0B0A0E"
+  },
+  "typography": {
+    "display": "Inter, Helvetica Neue, Arial, sans-serif",
+    "body": "Inter, Helvetica Neue, Arial, sans-serif"
+  },
+  "positioning": "Independent software. Quietly unconventional."
+}

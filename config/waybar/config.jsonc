@@ -1,0 +1,52 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 36,
+  "margin-top": 8,
+  "margin-left": 12,
+  "margin-right": 12,
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["network", "pulseaudio", "bluetooth", "battery", "tray", "custom/session"],
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "persistent-workspaces": {"*": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+  },
+  "hyprland/window": {"max-length": 28, "separate-outputs": true},
+  "clock": {"format": "{:%H:%M}", "tooltip-format": "{:%A, %d %B %Y}"},
+  "network": {
+    "format-wifi": "Wi-Fi {signalStrength}%",
+    "format-ethernet": "Ethernet",
+    "format-disconnected": "Offline",
+    "tooltip-format-wifi": "{essid}"
+  },
+  "pulseaudio": {"format": "Vol {volume}%", "format-muted": "Muted", "scroll-step": 5},
+  "bluetooth": {"format": "BT {status}", "format-connected": "BT {num_connections}", "format-disabled": ""},
+  "battery": {
+    "states": {"warning": 25, "critical": 10},
+    "format": "Bat {capacity}%",
+    "format-charging": "Charging {capacity}%",
+    "format-warning": "Low {capacity}%",
+    "format-critical": "Critical {capacity}%"
+  },
+  "tray": {"icon-size": 14, "spacing": 8},
+  "custom/launcher": {
+    "format": "Apps ✦",
+    "exec-if": "command -v rofi >/dev/null",
+    "on-click": "rofi -show drun",
+    "tooltip-format": "Open applications"
+  },
+  "custom/files": {
+    "format": "Files",
+    "exec-if": "command -v xdg-open >/dev/null",
+    "on-click": "xdg-open \"$HOME\"",
+    "tooltip-format": "Open home directory"
+  },
+  "custom/session": {
+    "format": "Session",
+    "exec-if": "command -v rofi >/dev/null",
+    "on-click": "sh \"${XDG_CONFIG_HOME:-$HOME/.config}/kuro/session-menu.sh\"",
+    "tooltip": false
+  }
+}

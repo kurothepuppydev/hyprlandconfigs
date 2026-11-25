@@ -1,0 +1,20 @@
+{
+  "obsidian": "#17151D",
+  "deep-violet": "#302A3B",
+  "surface": "#201D27",
+  "surface-soft": "#24212B",
+  "surface-dark": "#0B0A0E",
+  "border": "#41394B",
+  "border-subtle": "#9282AC26",
+  "lavender": "#9282AC",
+  "lavender-light": "#B9A8D4",
+  "lavender-dark": "#6D5C87",
+  "gothic-purple": "#513D68",
+  "ivory": "#F0EDF3",
+  "ash": "#C8C2D0",
+  "success": "#8FBF9F",
+  "warning": "#D9B878",
+  "error": "#D9828B",
+  "info": "#91A8C9",
+  "cyan": "#8FAFBA"
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 320" width="1600" height="320">
+<rect width="1600" height="320" fill="none"/>
+<g transform="translate(70 36) scale(.48)"></g>
+<text x="90" y="202" font-family="Inter, Arial, sans-serif" font-size="104" letter-spacing="19" font-weight="500">
+<tspan fill="#9282AC">KURO</tspan><tspan fill="#F0EDF3">THEPUPPY.DEV</tspan></text>
+<path d="M94 246 H1506" stroke="#9282AC" stroke-width="2" opacity=".55"/>
+</svg>
