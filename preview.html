@@ -221,6 +221,40 @@ pre { margin: 12px; white-space: pre-wrap; line-height: 1.6; }
 }
 .status-dialog p { color: #C8C2D0; font-size: 13px; }
 .status-toast .panel-path { margin: -16px -16px 8px; }
+.status-dialog form { margin-top: 8px; }
+.status-dialog .panel-close { width: 100%; text-align: left; }
+.panel-close {
+  padding: 9px 10px;
+  background: #201D27;
+  border-radius: 3px;
+}
+.panel-close::before {
+  content: "›";
+  color: #B9A8D4;
+  margin-right: 8px;
+}
+button {
+  position: relative;
+  overflow: hidden;
+}
+button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, #b9a8d438 0 1px, transparent 1px 4px);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  button:hover::after { animation: button-scan 560ms ease-out; }
+}
+@keyframes button-scan {
+  0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+  20% { clip-path: inset(16% 72% 12% 0); opacity: 0.65; }
+  38% { clip-path: inset(0 42% 0 14%); opacity: 0.3; }
+  52% { clip-path: inset(25% 20% 10% 36%); opacity: 0.65; }
+  100% { clip-path: inset(0 0 0 100%); opacity: 0; }
+}
 </style>
 <main class="desktop">
   <div class="wallpaper" aria-hidden="true"></div>
@@ -267,12 +301,12 @@ Hyprland 0.53.3
   <div class="launcher-items"></div>
   <p class="launcher-empty" hidden>No matching applications.</p>
 </dialog>
-<div class="status-toast" hidden><div class="panel-path"><span aria-hidden="true">06 /</span> Notifications</div><span role="status"></span><button type="button">Dismiss</button></div>
+<div class="status-toast" hidden><div class="panel-path"><span aria-hidden="true">06 /</span> Notifications</div><span role="status"></span><button class="panel-close" type="button">Dismiss</button></div>
 <dialog class="launcher status-dialog" aria-labelledby="status-title">
   <h2 id="status-title" class="panel-path"><span aria-hidden="true"></span><strong></strong></h2>
   <p id="status-summary"></p>
   <div class="status-controls"></div>
-  <form method="dialog"><button>Close</button></form>
+  <form method="dialog"><button class="panel-close">Close</button></form>
 </dialog>
 <script>
 const workspace = document.querySelector("#workspace");
