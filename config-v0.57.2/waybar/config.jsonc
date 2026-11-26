@@ -1,0 +1,242 @@
+[
+  {
+    "layer": "top",
+    "position": "top",
+    "height": 41,
+    "margin-top": 8,
+    "margin-left": 12,
+    "margin-right": 12,
+    "modules-left": [
+      "clock"
+    ],
+    "modules-center": [
+      "network",
+      "pulseaudio",
+      "bluetooth",
+      "battery",
+      "custom/netbird",
+      "tray"
+    ],
+    "modules-right": [
+      "custom/notifications",
+      "custom/session",
+      "custom/brand"
+    ],
+    "hyprland/workspaces": {
+      "format": "{id}",
+      "on-click": "activate",
+      "persistent-workspaces": {
+        "*": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    },
+    "hyprland/window": {
+      "max-length": 28,
+      "separate-outputs": true
+    },
+    "clock": {
+      "format": "{:%I:%M %p}",
+      "tooltip-format": "{:%A, %d %B %Y}"
+    },
+    "network": {
+      "format-wifi": "⌁ Wi-Fi {signalStrength}%",
+      "format-ethernet": "⌁ Ethernet",
+      "format-disconnected": "⌁ Offline",
+      "tooltip-format-wifi": "{essid}",
+      "on-click": "nm-connection-editor"
+    },
+    "pulseaudio": {
+      "format": "◖ Vol {volume}%",
+      "format-muted": "◖ Muted",
+      "scroll-step": 5,
+      "on-click": "pavucontrol"
+    },
+    "bluetooth": {
+      "format": "ᛒ BT {status}",
+      "format-connected": "ᛒ BT {num_connections}",
+      "format-disabled": ""
+    },
+    "battery": {
+      "states": {
+        "warning": 25,
+        "critical": 10
+      },
+      "format": "▰ Bat {capacity}%",
+      "format-charging": "▰ Charging {capacity}%",
+      "format-warning": "▰ Low {capacity}%",
+      "format-critical": "▰ Critical {capacity}%"
+    },
+    "custom/netbird": {
+      "exec": "$HOME/.config/waybar/netbird-status.sh",
+      "return-type": "json",
+      "interval": 5,
+      "on-click": "$HOME/.config/waybar/netbird-toggle.sh",
+      "format": "{}",
+      "escape": false
+    },
+    "tray": {
+      "icon-size": 16,
+      "spacing": 9
+    },
+    "custom/launcher": {
+      "format": "Apps ✦",
+      "exec-if": "command -v hyprlauncher >/dev/null || command -v rofi >/dev/null",
+      "on-click": "sh -lc 'command -v hyprlauncher >/dev/null 2>&1 && exec hyprlauncher || exec rofi -show drun'",
+      "tooltip-format": "Open applications"
+    },
+    "custom/files": {
+      "format": "Files",
+      "exec-if": "command -v dolphin >/dev/null",
+      "on-click": "dolphin \"$HOME\"",
+      "tooltip-format": "Open home directory"
+    },
+    "custom/session": {
+      "format": "Session",
+      "exec-if": "command -v rofi >/dev/null",
+      "on-click": "sh \"${XDG_CONFIG_HOME:-$HOME/.config}/kuro/session-menu.sh\"",
+      "tooltip": false
+    },
+    "custom/notifications": {
+      "format": "Notifications",
+      "tooltip": false
+    },
+    "custom/brand": {
+      "format": "♱ <span font_family=\"Noto Sans Symbols 2\">☠</span> kurothepuppy.dev",
+      "image-path": "/home/kuro/.config/waybar/kuro-emblem-lavender.svg",
+      "icon-size": 18,
+      "escape": false,
+      "tooltip": false
+    },
+    "name": "main-screen",
+    "output": "DP-3"
+  },
+  {
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "margin-top": 8,
+    "margin-left": 12,
+    "margin-right": 12,
+    "modules-left": [
+      "clock"
+    ],
+    "modules-center": [
+      "network",
+      "pulseaudio",
+      "bluetooth",
+      "battery",
+      "custom/netbird",
+      "tray"
+    ],
+    "modules-right": [
+      "custom/notifications",
+      "custom/session",
+      "custom/brand"
+    ],
+    "hyprland/workspaces": {
+      "format": "{id}",
+      "on-click": "activate",
+      "persistent-workspaces": {
+        "*": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    },
+    "hyprland/window": {
+      "max-length": 28,
+      "separate-outputs": true
+    },
+    "clock": {
+      "format": "{:%I:%M %p}",
+      "tooltip-format": "{:%A, %d %B %Y}"
+    },
+    "network": {
+      "format-wifi": "⌁ Wi-Fi {signalStrength}%",
+      "format-ethernet": "⌁ Ethernet",
+      "format-disconnected": "⌁ Offline",
+      "tooltip-format-wifi": "{essid}",
+      "on-click": "nm-connection-editor"
+    },
+    "pulseaudio": {
+      "format": "◖ Vol {volume}%",
+      "format-muted": "◖ Muted",
+      "scroll-step": 5,
+      "on-click": "pavucontrol"
+    },
+    "bluetooth": {
+      "format": "ᛒ BT {status}",
+      "format-connected": "ᛒ BT {num_connections}",
+      "format-disabled": ""
+    },
+    "battery": {
+      "states": {
+        "warning": 25,
+        "critical": 10
+      },
+      "format": "▰ Bat {capacity}%",
+      "format-charging": "▰ Charging {capacity}%",
+      "format-warning": "▰ Low {capacity}%",
+      "format-critical": "▰ Critical {capacity}%"
+    },
+    "custom/netbird": {
+      "exec": "$HOME/.config/waybar/netbird-status.sh",
+      "return-type": "json",
+      "interval": 5,
+      "on-click": "$HOME/.config/waybar/netbird-toggle.sh",
+      "format": "{}",
+      "escape": false
+    },
+    "tray": {
+      "icon-size": 14,
+      "spacing": 8
+    },
+    "custom/launcher": {
+      "format": "Apps ✦",
+      "exec-if": "command -v hyprlauncher >/dev/null || command -v rofi >/dev/null",
+      "on-click": "sh -lc 'command -v hyprlauncher >/dev/null 2>&1 && exec hyprlauncher || exec rofi -show drun'",
+      "tooltip-format": "Open applications"
+    },
+    "custom/files": {
+      "format": "Files",
+      "exec-if": "command -v dolphin >/dev/null",
+      "on-click": "dolphin \"$HOME\"",
+      "tooltip-format": "Open home directory"
+    },
+    "custom/session": {
+      "format": "Session",
+      "exec-if": "command -v rofi >/dev/null",
+      "on-click": "sh \"${XDG_CONFIG_HOME:-$HOME/.config}/kuro/session-menu.sh\"",
+      "tooltip": false
+    },
+    "custom/notifications": {
+      "format": "Notifications",
+      "tooltip": false
+    },
+    "custom/brand": {
+      "format": "♱ <span font_family=\"Noto Sans Symbols 2\">☠</span> kurothepuppy.dev",
+      "image-path": "/home/kuro/.config/waybar/kuro-emblem-lavender.svg",
+      "icon-size": 16,
+      "escape": false,
+      "tooltip": false
+    },
+    "name": "secondary-screen",
+    "output": "HDMI-A-1"
+  }
+]

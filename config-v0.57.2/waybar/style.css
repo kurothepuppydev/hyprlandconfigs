@@ -1,0 +1,111 @@
+@import url("colors.css");
+
+* {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: alpha(@obsidian, 0.95);
+    color: @ivory;
+    border: 1px solid @border;
+    border-radius: 5px;
+}
+
+/* Scale only the DP-3 bar by about 15%; HDMI-A-1 keeps the base sizing. */
+window#waybar.main-screen {
+    min-height: 41px;
+}
+
+window#waybar.main-screen * {
+    font-size: 13.8px;
+}
+
+window#waybar.main-screen #clock {
+    font-size: 16px;
+    padding: 0 14px;
+}
+
+window#waybar.main-screen #network,
+window#waybar.main-screen #pulseaudio,
+window#waybar.main-screen #bluetooth,
+window#waybar.main-screen #battery,
+window#waybar.main-screen #custom-netbird,
+window#waybar.main-screen #tray,
+window#waybar.main-screen #custom-notifications,
+window#waybar.main-screen #custom-session,
+window#waybar.main-screen #custom-brand {
+    margin-left: 9px;
+}
+
+.modules-left { margin-left: 12px; }
+.modules-right { margin-right: 12px; }
+
+#workspaces button {
+    color: @ash;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 4px;
+    box-shadow: none;
+    text-shadow: none;
+    padding: 0 6px;
+}
+
+#workspaces button:hover { background: @surface_soft; color: @lavender_light; }
+#workspaces button.active { background: @deep_violet; color: @ivory; border-bottom-color: @lavender; }
+#workspaces button.urgent { color: @error; border-bottom-color: @error; font-weight: bold; }
+#window { font-family: Inter, sans-serif; color: @ash; margin-left: 8px; }
+#clock { font-size: 14px; }
+#network, #pulseaudio, #bluetooth, #battery, #custom-netbird, #tray, #custom-session,
+#custom-notifications, #custom-brand { margin-left: 8px; }
+#network, #pulseaudio, #bluetooth, #battery, #custom-netbird { padding: 0 3px; }
+#modules-center > widget { margin-left: 8px; }
+#battery.warning { color: @warning; }
+#battery.critical { color: @error; }
+#custom-session:hover { color: @lavender_light; }
+#custom-brand { color: @ash; }
+
+#workspaces button, #custom-session {
+    transition: background-color 140ms ease-out, color 140ms ease-out, border-color 140ms ease-out;
+}
+
+#custom-launcher, #custom-files {
+    margin-right: 4px;
+    padding: 0 8px;
+    border-radius: 4px;
+    transition: background-color 140ms ease-out, color 140ms ease-out;
+}
+
+#custom-launcher:hover, #custom-files:hover {
+    background-color: @deep_violet;
+    color: @lavender_light;
+}
+
+#workspaces button:focus {
+    border-bottom-color: @lavender_light;
+    background: @surface_soft;
+}
+
+#clock {
+    padding: 0 12px;
+    color: @ivory;
+    border-left: 1px solid @border;
+    border-right: 1px solid @border;
+    background: @surface;
+}
+
+#custom-launcher, #custom-files, #custom-session {
+    border-bottom: 2px solid transparent;
+    transition: background-color 140ms ease-out, color 140ms ease-out, border-color 140ms ease-out;
+}
+
+#custom-launcher:hover, #custom-files:hover, #custom-session:hover {
+    border-bottom-color: @lavender;
+}
+#custom-netbird { padding: 0 3px; }
+#custom-netbird.connected { color: @success; }
+#custom-netbird.disconnected, #custom-netbird.unavailable { color: @ash; }
+#custom-netbird:hover { color: @lavender_light; }
+window#waybar.main-screen #custom-netbird { margin-left: 9px; }
